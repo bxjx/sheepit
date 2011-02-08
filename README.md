@@ -12,25 +12,26 @@ helpers.
 
 Here's an example: 
 
-  $('#sheepItForm').livequery(function(){
-    $(this).sheepIt({
-      afterRemove: function(index, formToRemove){
-        // parse form to extract rails Active Record item id. You'll 
-        // need to add this class to your hidden input that has the id
-        var item_id = formToRemove.find('input.avatar_id').val();
-        if (item_id){
-          $('#sheepItForm_noforms_template').append(
-            '<input type="hidden" name="member[avatars_attributes][][id]" value="' + item_id + '" />' +
-            '<input type="hidden" name="member[avatars_attributes][][_destroy]" value="1" />'
-          );
-        }
-      },
-      data: avatars
+    $('#sheepItForm').livequery(function(){
+      $(this).sheepIt({
+        afterRemove: function(index, formToRemove){
+          // parse the removed form to extract rails Active Record item id. You'll 
+          // need to add this class to your hidden input that has the id.
+          var item_id = formToRemove.find('input.avatar_id').val();
+          if (item_id){
+            $('#sheepItForm_noforms_template').append(
+              '<input type="hidden" name="member[avatars_attributes][][id]" value="' + item_id + '" />' +
+              '<input type="hidden" name="member[avatars_attributes][][_destroy]" value="1" />'
+            );
+          }
+        },
+        data: avatars
+      });
     });
 
 I then also put:
 
-  :javascript
-    var avatars = #{@member.avatars.to_json(:only => [:id, :name])};
+    :javascript
+      var avatars = #{@member.avatars.to_json(:only => [:id, :name])};
 
 into my view (this is haml) so that the form is populated with has many items.
