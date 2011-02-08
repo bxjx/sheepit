@@ -514,6 +514,11 @@
 
             // From DOM
             formToRemove.remove();
+            
+            // callback
+            if (typeof options.afterRemove === "function") {
+                options.afterRemove(index, formToRemove);
+            }
 
             return true;
 
@@ -1420,6 +1425,7 @@
                 afterClone: function() {},
                 beforeAdd: function() {},
                 afterAdd: function() {},
+                afterRemove: function() {},
                 insertNewForms: 'after'
             };
 
